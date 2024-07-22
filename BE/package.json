@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "name": "websocket-rabbitmq-tut-backend",
+  "description": "web server and consumer of websocket and rabbitmq respectively",
+  "scripts": {
+    "server": "nodemon server",
+    "consumer": "node consumer"
+  },
+  "dependencies": {
+    "amqplib": "^0.8.0",
+    "cors": "^2.8.5",
+    "mongoose": "^8.5.1",
+    "socket.io": "^4.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
