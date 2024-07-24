@@ -16,7 +16,7 @@ const io = require("socket.io")(4000, {
 })
 
 io.on('connection', socket => {
-  amqp.connect('amqp://localhost', (err0, connection) => {
+  amqp.connect(rmUrl, (err0, connection) => {
       if (err0) {
           throw err0
       }
