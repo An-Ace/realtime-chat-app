@@ -31,22 +31,30 @@ io.on('connection', socket => {
                     ...message,
                     id: socket.id
                 }
-                channel.sendToQueue(QUEUE_1, Buffer.from(JSON.stringify(data)))
-                io.emit('SUBSCRIBE', {...data, status: 'SENT'})
+                setTimeout(() => {
+                // console.log('Timer completed. Processing message...');
+                    channel.sendToQueue(QUEUE_1, Buffer.from(JSON.stringify(data)))
+                    io.emit('SUBSCRIBE', {...data, status: 'SENT'})
+                }, 2000);
+                
                 // console.log({...data, status: 'SENT'})
 
             })
             channel.consume(QUEUE_1, async (message) => {
                 const data = JSON.parse(message.content.toString())
-                await Message.create({ id: data.id, message: data.message, name: data.name, createdAt: data.createdAt, uid: data.uid })
-                io.emit('SUBSCRIBE', {...data, status: 'RECEIVED'})
-            }, { noAck: true })
+                setTimeout(async () => {
+                // console.log('Timer completed. Processing message...');
+                    await Message.create({ id: data.id, message: data.message, name: data.name, createdAt: data.createdAt, uid: data.uid })
+                    io.emit('SUBSCRIBE', {...data, status: 'RECEIVED'})
+                }, 2000);
+                
+            }, { noAck: true, })
         })
     })
 })
 
 app.get("/", async (req, res) => {
-  const messages = (await Message.find()).map(message => ({ ...message, status: 'RECEIVED' }));
+  const messages = (await Message.find().exec()).map(message => ({ ...message._doc, status: 'RECEIVED' }));
   return res.status(200).json(messages);
 });
 app.listen(5000)

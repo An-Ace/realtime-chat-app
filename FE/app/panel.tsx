@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { Me, Other } from './bubble';
 import { io } from "socket.io-client";
 import { create } from 'zustand'
-const socket = io('http://localhost:4000');
+import { apiUrl, socketUrl } from './test/var';
+const socket = io(socketUrl);
 type Message = { id?: string, message: string, name: string, createdAt: string, status?: 'SENDING' | 'SENT' | 'RECEIVED', uid: string }
 
 type Store = {
@@ -56,11 +57,14 @@ export default function Panel({ name } : { name: string }) {
       setSocketId(socket.id?.toString() || '')
     }
     if (!connected) {
-      fetch('http://localhost:5000')
+      fetch(apiUrl)
       .then(async (e) => { setMessages(await e.json()) })
       onConnect();
       socket.on("connect", onConnect);
       socket.on("SUBSCRIBE", (message) => {
+        // setTimeout(async () => {
+        //   sendMessage(message)
+        // }, 2000);
         sendMessage(message)
       })
       setConnected(true)

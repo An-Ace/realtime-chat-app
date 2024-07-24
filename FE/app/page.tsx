@@ -3,7 +3,7 @@ import {useState } from 'react';
 import Panel from './panel';
 
 export default function Home() {
-  const [name, setName] = useState('An-Ace')
+  const [name, setName] = useState('')
   const [input, setInput] = useState('')
   return (
     <main>
