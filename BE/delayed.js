@@ -33,7 +33,7 @@ require('amqplib/callback_api')
                     console.log(msg.content.toString());
                     ch.ack(msg);
                 }
-            });
+            }, { noAck: true, });
         });
     });
 
