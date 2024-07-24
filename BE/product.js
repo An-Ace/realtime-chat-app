@@ -4,7 +4,7 @@ const Product = require("./schemas/product");
 const app = express();
 const cors = require('cors');
 const { default: mongoose } = require('mongoose');
-const { feUrl } = require('./var');
+const { feUrl, rmUrl } = require('./var');
 const exchange = 'delayed_exchange';
 const queue = 'delay_queue';
 const queueBinding = 'delay_exchange_queue_binding';
@@ -17,7 +17,7 @@ const io = require("socket.io")(4000, {
 })
 
 io.on('connection', socket => {
-  amqp.connect('amqp://localhost', (err0, connection) => {
+  amqp.connect(rmUrl, (err0, connection) => {
       if (err0) {
           throw err0
       }
