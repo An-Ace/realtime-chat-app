@@ -4,7 +4,7 @@ const queueBinding = 'delay_exchange_queue_binding';
 
 
 require('amqplib/callback_api')
-    .connect('amqp://localhost', function (err, conn) {
+    .connect('amqp://admin:admin@localhost', function (err, conn) {
         if (err != null) miscue(err);
         conn.createChannel( function(err,ch){
             if (err != null) bail(err);
@@ -15,11 +15,11 @@ require('amqplib/callback_api')
     });
 
     require('amqplib/callback_api')
-    .connect('amqp://localhost', function (err, conn) {
+    .connect('amqp://admin:admin@localhost', function (err, conn) {
         console.log('Connect')
         if (err != null) miscue(err);
         console.log('MISCUE')
-        var ok = conn.createChannel(function(err,ch){
+        conn.createChannel(function(err,ch){
             console.log('createChannel')
             ch.assertExchange(exchange, 'x-delayed-message', { durable: true, arguments: { 'x-delayed-type': 'direct' } });
             console.log('assertExchange')
@@ -31,7 +31,7 @@ require('amqplib/callback_api')
                 console.log('Consume')
                 if (msg !== null) {
                     console.log(msg.content.toString());
-                    ch.ack(msg);
+                    // ch.ack(msg);
                 }
             }, { noAck: true, });
         });
