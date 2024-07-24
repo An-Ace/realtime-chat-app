@@ -4,7 +4,7 @@ const Product = require("./schemas/product");
 const app = express();
 const cors = require('cors');
 const { default: mongoose } = require('mongoose');
-const { socketUrl } = require('./var');
+const { feUrl } = require('./var');
 const exchange = 'delayed_exchange';
 const queue = 'delay_queue';
 const queueBinding = 'delay_exchange_queue_binding';
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 const io = require("socket.io")(4000, {
     cors: {
-        origin: [socketUrl]
+        origin: [feUrl]
     }
 })
 
