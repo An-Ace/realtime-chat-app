@@ -25,15 +25,20 @@ io.on('connection', socket => {
               throw err
           }
           socket.on('PLAY', message => {
+            console.log('PLAY')
             const now = Date.now()
             Product.updateOne({ _id: message._id }, { playOn: now }).
             then(() => {
-              if (err != null) bail(err);
-              const headers = { 'x-delay': message.timmer * 1000 }; ///10 second delay
-              channel.publish(exchange, queueBinding, new Buffer(JSON.stringify({ ...message, playOn: now })), { headers });
-              io.emit('PLAYED', {...message, playOn: now})
+              try {
+                console.log('UPDATED')
+                if (err != null) bail(err);
+                const headers = { 'x-delay': message.timmer * 1000 }; ///10 second delay
+                channel.publish(exchange, queueBinding, new Buffer.from(JSON.stringify({ ...message, playOn: now })), { headers });
+                io.emit('PLAYED', {...message, playOn: now})
+              } catch (error) {
+                console.log(error)
+              }
             })
-            .catch(console.log)
           })
           socket.on('ACCEPT', message => {
             Product.updateOne({ _id: message._id }, { acceptedOn: Date.now(), playOn: 0, buyerNotification: 'ACCEPTED' })
@@ -48,6 +53,7 @@ io.on('connection', socket => {
           channel.consume(queue, async function (msg) {
             if (msg !== null) {
               try {
+                console.log('CONSUME')
                 const content = JSON.parse(msg.content.toString())
                 const product = await Product.findOne({ _id: content._id }).exec()
                 if (!product.acceptedOn) { // acceptedOn = 0 EXPIRED
