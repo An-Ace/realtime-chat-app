@@ -32,8 +32,10 @@ io.on('connection', socket => {
               try {
                 console.log('UPDATED')
                 if (err != null) bail(err);
+                console.log('AFTERBAIL')
                 const headers = { 'x-delay': message.timmer * 1000 }; ///10 second delay
                 channel.publish(exchange, queueBinding, new Buffer.from(JSON.stringify({ ...message, playOn: now })), { headers });
+                console.log('PUBLISHED')
                 io.emit('PLAYED', {...message, playOn: now})
               } catch (error) {
                 console.log(error)
