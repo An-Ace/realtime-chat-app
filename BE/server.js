@@ -3,12 +3,13 @@ const express = require("express");
 const Message = require("./schemas/message");
 const app = express();
 const cors = require('cors');
+const { socketUrl } = require('./var');
 
 app.use(express.json());
 app.use(cors());
 const io = require("socket.io")(4000, {
     cors: {
-        origin: ['http://localhost:3000']
+        origin: [socketUrl]
     }
 })
 
