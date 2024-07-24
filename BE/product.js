@@ -33,6 +33,7 @@ io.on('connection', socket => {
               channel.publish(exchange, queueBinding, new Buffer.from(JSON.stringify({ ...message, playOn: now })), { headers });
               io.emit('PLAYED', {...message, playOn: now})
             })
+            .catch(console.log)
           })
           socket.on('ACCEPT', message => {
             Product.updateOne({ _id: message._id }, { acceptedOn: Date.now(), playOn: 0, buyerNotification: 'ACCEPTED' })
