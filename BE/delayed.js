@@ -4,7 +4,7 @@ const queueBinding = 'delay_exchange_queue_binding';
 
 
 require('amqplib/callback_api')
-    .connect('amqp://127.0.0.1:5672', function (err, conn) {
+    .connect('amqp://admin:admin/localhost', function (err, conn) {
         if (err != null) miscue(err);
         conn.createChannel( function(err,ch){
             if (err != null) bail(err);
@@ -15,7 +15,7 @@ require('amqplib/callback_api')
     });
 
     require('amqplib/callback_api')
-    .connect('amqp://127.0.0.1:5672', function (err, conn) {
+    .connect('amqp://admin:admin/localhost', function (err, conn) {
         console.log('Connect')
         if (err != null) miscue(err);
         console.log('MISCUE')
