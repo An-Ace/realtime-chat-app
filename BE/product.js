@@ -11,7 +11,9 @@ app.use(express.json());
 app.use(cors());
 const io = require("socket.io")(4000, {
     cors: {
-        origin: ['*']
+        origin: ['https://test.itemstore.id', 'http://localhost:3000'],
+        methods: ["GET", "POST"],
+        credentials: true
     }
 })
 
