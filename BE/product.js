@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 const io = require("socket.io")(4000, {
     cors: {
-        origin: [feUrl]
+        origin: ['https://test.itemstore.id']
     }
 })
 
